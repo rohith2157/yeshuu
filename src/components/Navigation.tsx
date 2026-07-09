@@ -1,118 +1,94 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ThemeToggle } from './ThemeToggle';
 
-interface NavigationProps {
-  onAboutClick: () => void;
-  onWorkClick: () => void;
-  onSkillsClick: () => void;
-  onProcessClick: () => void;
-  onPricingClick: () => void;
-  onContactClick: () => void;
-}
-
-export const Navigation: React.FC<NavigationProps> = ({
-  onAboutClick,
-  onWorkClick,
-  onSkillsClick,
-  onProcessClick,
-  onPricingClick,
-  onContactClick
-}) => {
+export const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navLinks = [
+    { label: 'Tools', href: 'https://gsap.com/docs/v3/Plugins' },
+    { label: 'Showcase', href: 'https://gsap.com/community/showcase' },
+    { label: 'Community', href: 'https://gsap.com/community' },
+    { label: 'Learn GSAP', href: 'https://gsap.com/resources' },
+    { label: 'Docs', href: 'https://gsap.com/docs/v3' },
+    { label: 'Demos', href: 'https://gsap.com/demos' }
+  ];
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-700 select-none ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 select-none ${
         scrolled || isOpen
-          ? 'bg-studio-bg/75 backdrop-blur-md border-b border-studio-stone/30 py-4 shadow-soft'
-          : 'bg-transparent py-7'
+          ? 'bg-just-black/90 backdrop-blur-md border-b border-surface-25 py-4'
+          : 'bg-transparent py-6'
       }`}
+      style={{ top: scrolled ? '0px' : '40px' }} // Position below announcement banner initially
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        {/* Brand Name on the Left */}
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 flex items-center justify-between">
+        
+        {/* Brand Name / Logo on the Left */}
         <div className="flex items-center">
-          <span className="text-sm font-editorial font-bold text-studio-dark uppercase tracking-widest">
-            Pixel's <span className="text-studio-gold font-light">&amp;</span> Portfolio's
-          </span>
+          <a 
+            href="https://gsap.com" 
+            className="text-2xl font-black tracking-tight text-surface-cream uppercase hover:text-shockingly-green transition-colors"
+          >
+            GSAP
+          </a>
         </div>
 
-        {/* Desktop Nav HUD Links (Hidden on mobile) */}
+        {/* Desktop Nav HUD Links */}
         <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-          <button
-            onClick={onAboutClick}
-            className="text-xs font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark transition-colors duration-300 relative group py-1 cursor-pointer"
-          >
-            About
-            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-studio-gold transition-all duration-300 group-hover:w-full" />
-          </button>
-          <button
-            onClick={onWorkClick}
-            className="text-xs font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark transition-colors duration-300 relative group py-1 cursor-pointer"
-          >
-            Showcase
-            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-studio-gold transition-all duration-300 group-hover:w-full" />
-          </button>
-          <button
-            onClick={onSkillsClick}
-            className="text-xs font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark transition-colors duration-300 relative group py-1 cursor-pointer"
-          >
-            Skills
-            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-studio-gold transition-all duration-300 group-hover:w-full" />
-          </button>
-          <button
-            onClick={onProcessClick}
-            className="text-xs font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark transition-colors duration-300 relative group py-1 cursor-pointer"
-          >
-            Process
-            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-studio-gold transition-all duration-300 group-hover:w-full" />
-          </button>
-          <button
-            onClick={onPricingClick}
-            className="text-xs font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark transition-colors duration-300 relative group py-1 cursor-pointer"
-          >
-            Pricing
-            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-studio-gold transition-all duration-300 group-hover:w-full" />
-          </button>
-          <button
-            onClick={onContactClick}
-            className="text-xs font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark transition-colors duration-300 relative group py-1 cursor-pointer"
-          >
-            Contact
-            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-studio-gold transition-all duration-300 group-hover:w-full" />
-          </button>
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-body-sm font-semibold text-surface-50 hover:text-surface-cream transition-colors duration-300 relative group py-1"
+            >
+              {link.label}
+              <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-[#fffce1] transition-all duration-300 group-hover:w-full" />
+            </a>
+          ))}
         </div>
 
-        {/* Right CTA + Mobile Trigger */}
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
+        {/* Right CTA / Auth buttons */}
+        <div className="hidden sm:flex items-center gap-6">
+          <a 
+            href="https://gsap.com/login" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-body-sm font-semibold text-surface-cream hover:text-shockingly-green transition-colors"
+          >
+            Login/Create Account
+          </a>
           
-          <div className="hidden sm:block">
-            <button
-              onClick={onContactClick}
-              className="text-xs font-bold tracking-widest uppercase px-6 py-3 bg-studio-dark text-studio-bg hover:bg-studio-gold hover:text-studio-white transition-colors duration-500 shadow-soft cursor-pointer border border-studio-dark hover:border-studio-gold rounded-sm"
-            >
-              Acquire Design
-            </button>
-          </div>
+          <a
+            href="https://gsap.com/pricing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="gradient-border-btn px-6 py-3 text-caption font-semibold leading-[1.05] cursor-pointer"
+          >
+            Get GSAP
+          </a>
+        </div>
 
-          {/* Hamburger Menu button on Mobile */}
+        {/* Mobile menu trigger */}
+        <div className="md:hidden flex items-center">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-studio-dark hover:text-studio-gold transition-colors duration-300 cursor-pointer"
+            className="p-2 text-surface-cream hover:text-shockingly-green transition-colors cursor-pointer"
             aria-label="Toggle mobile menu"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
@@ -125,72 +101,40 @@ export const Navigation: React.FC<NavigationProps> = ({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-x-0 top-full bg-studio-bg/95 backdrop-blur-md border-b border-studio-stone/30 shadow-premium z-30 py-6 px-6 md:hidden flex flex-col gap-4 overflow-hidden"
+            className="absolute inset-x-0 top-full bg-just-black border-b border-surface-25 shadow-2xl z-30 py-6 px-6 md:hidden flex flex-col gap-4 overflow-hidden"
           >
-            <button
-              onClick={() => {
-                onAboutClick();
-                setIsOpen(false);
-              }}
-              className="text-xs font-bold uppercase tracking-[0.25em] text-studio-muted hover:text-studio-dark text-left py-2 border-b border-studio-stone/20 cursor-pointer"
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+                className="text-body-sm font-semibold text-surface-50 hover:text-surface-cream text-left py-2 border-b border-surface-25/50"
+              >
+                {link.label}
+              </a>
+            ))}
+            
+            <a 
+              href="https://gsap.com/login" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="text-body-sm font-semibold text-surface-cream hover:text-shockingly-green text-left py-2 border-b border-surface-25/50"
             >
-              About
-            </button>
-            <button
-              onClick={() => {
-                onWorkClick();
-                setIsOpen(false);
-              }}
-              className="text-xs font-bold uppercase tracking-[0.25em] text-studio-muted hover:text-studio-dark text-left py-2 border-b border-studio-stone/20 cursor-pointer"
-            >
-              Showcase
-            </button>
-            <button
-              onClick={() => {
-                onSkillsClick();
-                setIsOpen(false);
-              }}
-              className="text-xs font-bold uppercase tracking-[0.25em] text-studio-muted hover:text-studio-dark text-left py-2 border-b border-studio-stone/20 cursor-pointer"
-            >
-              Skills
-            </button>
-            <button
-              onClick={() => {
-                onProcessClick();
-                setIsOpen(false);
-              }}
-              className="text-xs font-bold uppercase tracking-[0.25em] text-studio-muted hover:text-studio-dark text-left py-2 border-b border-studio-stone/20 cursor-pointer"
-            >
-              Process
-            </button>
-            <button
-              onClick={() => {
-                onPricingClick();
-                setIsOpen(false);
-              }}
-              className="text-xs font-bold uppercase tracking-[0.25em] text-studio-muted hover:text-studio-dark text-left py-2 border-b border-studio-stone/20 cursor-pointer"
-            >
-              Pricing
-            </button>
-            <button
-              onClick={() => {
-                onContactClick();
-                setIsOpen(false);
-              }}
-              className="text-sm font-bold uppercase tracking-widest text-studio-muted hover:text-studio-dark text-left py-2 cursor-pointer"
-            >
-              Contact
-            </button>
+              Login/Create Account
+            </a>
 
-            <button
-              onClick={() => {
-                onContactClick();
-                setIsOpen(false);
-              }}
-              className="w-full text-center text-xs font-bold tracking-widest uppercase py-4 bg-studio-dark text-studio-white hover:bg-studio-gold transition-colors duration-500 shadow-soft cursor-pointer mt-4 rounded-sm"
+            <a
+              href="https://gsap.com/pricing"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="gradient-border-btn w-full text-center py-4 text-caption font-semibold leading-[1.05] mt-4"
             >
-              Acquire Design
-            </button>
+              Get GSAP
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
