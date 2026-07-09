@@ -1,256 +1,120 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
-interface HeroProps {
-  onViewWorkClick: () => void;
-  onGetStartedClick: () => void;
-}
-
-export const Hero: React.FC<HeroProps> = ({ onViewWorkClick, onGetStartedClick }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Mouse coordinate mapping for 3D card tilt
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = { damping: 35, stiffness: 180, mass: 0.8 };
-  const smoothMouseX = useSpring(mouseX, springConfig);
-  const smoothMouseY = useSpring(mouseY, springConfig);
-
-  // Map mouse positions to 3D rotation degrees
-  const rotateX = useTransform(smoothMouseY, [-0.5, 0.5], [15, -15]);
-  const rotateY = useTransform(smoothMouseX, [-0.5, 0.5], [-15, 15]);
-
-  // Scroll mapping for layered parallax (foreground vs background)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  const scrollSpring = useSpring(scrollYProgress, { damping: 40, stiffness: 200 });
-
-  // Map scroll progress to vertical offsets to create depth
-  const textY = useTransform(scrollSpring, [0, 1], ['0px', '100px']);
-  const foregroundY = useTransform(scrollSpring, [0, 1], ['0px', '-100px']);
-  const rotateScroll = useTransform(scrollSpring, [0, 1], [0, 8]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    
-    // Normalized coordinates from -0.5 to 0.5
-    const x = (e.clientX - rect.left) / width - 0.5;
-    const y = (e.clientY - rect.top) / height - 0.5;
-
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
-  // Split text for word-by-word reveal
-  const headlineWords = "WE DESIGN PORTFOLIOS THAT OPEN DOORS.".split(" ");
-
+export const Hero: React.FC = () => {
   return (
-    <section 
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative min-h-screen pt-28 pb-16 flex items-center overflow-hidden bg-studio-bg grid-mesh"
-      style={{ perspective: 1200 }}
-    >
-      {/* Immersive Background System */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="noise-overlay" />
-        
-        {/* Morphing ambient blur blobs */}
-        <div className="blob-bg bg-studio-beige-accent/35 top-[10%] left-[15%] w-[600px] h-[600px]" />
-        <div className="blob-bg bg-studio-blue/15 bottom-[10%] right-[10%] w-[500px] h-[500px]" style={{ animationDelay: '-8s', animationDuration: '35s' }} />
-        <div className="blob-bg bg-studio-gold/10 top-[40%] right-[30%] w-[400px] h-[400px]" style={{ animationDelay: '-16s', animationDuration: '24s' }} />
-      </div>
+    <section className="relative w-full min-h-[80vh] flex flex-col justify-between pt-16 pb-12 px-6 sm:px-12 md:px-16 overflow-hidden bg-just-black">
+      {/* Decorative Blob 1 (Top Left behind header/title) */}
+      <div className="absolute top-[10%] left-[5%] w-[350px] h-[350px] rounded-full bg-gradient-to-tr from-pink to-lipstick-pink opacity-25 blur-[90px] pointer-events-none z-0 animate-blob-bounce" />
+      
+      {/* Decorative Blob 2 (Bottom Right) */}
+      <div className="absolute bottom-[10%] right-[10%] w-[450px] h-[450px] rounded-full bg-gradient-to-tr from-blue to-lilac opacity-20 blur-[120px] pointer-events-none z-0 animate-blob-bounce-reverse" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center z-10">
-        
-        {/* Left Column: Kinetic Text Reveal */}
-        <motion.div 
-          style={{ y: textY }}
-          className="lg:col-span-6 text-left flex flex-col select-none"
-        >
-          {/* Subtle line indicator */}
-          <div className="flex items-center gap-3 mb-6">
-            <motion.span 
-              initial={{ width: 0 }}
-              animate={{ width: 40 }}
-              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="h-[1px] bg-studio-navy" 
-            />
-            <span className="text-[10px] uppercase tracking-[0.25em] font-bold text-studio-navy">
-              Creative Brand Engineers
-            </span>
-          </div>
-
-          {/* Masked Word Reveal Heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black font-editorial tracking-tight text-studio-dark leading-[1.0] uppercase">
-            {headlineWords.map((word, i) => (
-              <span key={i} className="char-mask mr-3 py-1">
-                <motion.span
-                  initial={{ y: '100%', filter: 'blur(4px)' }}
-                  animate={{ y: 0, filter: 'blur(0px)' }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: 0.15 + i * 0.05, 
-                    ease: [0.16, 1, 0.3, 1] 
-                  }}
-                  className="inline-block"
-                >
-                  {word}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
-
-          {/* Smooth subheadline reveal */}
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-6 text-base md:text-lg text-studio-muted leading-relaxed font-sans max-w-lg"
+      {/* Main Hero Container */}
+      <div className="relative z-10 my-auto w-full select-none cursor-default flex flex-col">
+        {/* Massive Typographic Headline */}
+        <div className="relative flex flex-col items-start leading-[0.9] tracking-display">
+          
+          {/* Overlapping Floral Star Shape (Floating near "Animate") */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.5, rotate: -45 }}
+            animate={{ opacity: 1, scale: 1, rotate: 45 }}
+            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute top-[-30px] left-[35%] sm:left-[30%] lg:left-[28%] w-16 h-16 sm:w-24 sm:h-24 pointer-events-none z-20"
           >
-            We transform professional identities into world-class digital exhibition pieces, balancing typography, generous whitespace, and luxury motion design.
-          </motion.p>
-
-          {/* Interactive CTAs */}
-          <div className="mt-10 flex flex-wrap gap-4">
-            <motion.button
-              onClick={onViewWorkClick}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="relative px-8 py-4 bg-studio-navy text-studio-white text-xs font-bold tracking-widest uppercase rounded-none border border-studio-navy cursor-pointer overflow-hidden group shadow-md"
-            >
-              <span className="relative z-10 group-hover:text-studio-dark transition-colors duration-300">View Exhibition</span>
-              <span className="absolute inset-0 bg-studio-gold transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.16, 1, 0.3, 1]" />
-            </motion.button>
-
-            <motion.button
-              onClick={onGetStartedClick}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-8 py-4 bg-transparent text-studio-dark border border-studio-beige-accent/80 hover:border-studio-dark text-xs font-bold tracking-widest uppercase rounded-none transition-colors duration-300"
-            >
-              Get Started
-            </motion.button>
-          </div>
-
-          {/* Floating Tagline Quote */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            transition={{ delay: 0.9, duration: 1 }}
-            className="mt-14 text-xs font-mono text-studio-muted border-l border-studio-gold pl-4 max-w-xs"
-          >
-            "Professional personal branding, crafted with design excellence."
+            <svg viewBox="0 0 100 100" fill="none" className="w-full h-full animate-spin" style={{ animationDuration: '20s' }}>
+              <path 
+                d="M50 0C53 25 75 47 100 50C75 53 53 75 50 100C47 75 25 53 0 50C25 47 47 25 50 0Z" 
+                fill="url(#floralGrad)" 
+              />
+              <defs>
+                <linearGradient id="floralGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ff8709" />
+                  <stop offset="50%" stopColor="#fec5fb" />
+                  <stop offset="100%" stopColor="#0ae448" />
+                </linearGradient>
+              </defs>
+            </svg>
           </motion.div>
-        </motion.div>
 
-        {/* Right Column: 3D Layered Spatial stack */}
-        <motion.div 
-          style={{ 
-            y: foregroundY,
-            rotateZ: rotateScroll,
-            rotateX: rotateX,
-            rotateY: rotateY,
-            transformStyle: "preserve-3d"
-          }}
-          className="lg:col-span-6 relative h-[450px] sm:h-[600px] w-full flex items-center justify-center cursor-pointer will-change-transform"
-        >
-          {/* Main depth container */}
-          <div className="relative w-full max-w-[380px] aspect-[4/5] flex items-center justify-center">
-            
-            {/* Ambient Background wireframe circle (depth background) */}
-            <div 
-              style={{ transform: "translateZ(-80px)" }}
-              className="absolute w-72 h-72 rounded-full border border-studio-beige-accent/50 pointer-events-none z-0" 
-            />
+          <motion.h1 
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[12vw] sm:text-[14vw] md:text-[13vw] lg:text-[12vw] font-semibold text-surface-cream"
+          >
+            Animate
+          </motion.h1>
 
-            {/* CARD 1: Cyber Portfolio (Deep background layer - Z-Index 1) */}
-            <motion.div
-              style={{ 
-                transform: "translateZ(-40px) rotate(-10deg) translateY(-40px)",
-                transformStyle: "preserve-3d"
-              }}
-              whileHover={{ transform: "translateZ(0px) rotate(-6deg) translateY(-50px)" }}
-              className="absolute w-[80%] aspect-[1.4/1] bg-studio-dark p-2 border border-studio-navy/40 shadow-xl overflow-hidden"
-              onClick={onViewWorkClick}
+          <div className="relative flex items-center w-full">
+            <motion.h1 
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+              className="text-[12vw] sm:text-[14vw] md:text-[13vw] lg:text-[12vw] font-semibold text-surface-cream"
             >
-              <div className="w-full h-full bg-zinc-950 overflow-hidden relative group">
-                <img
-                  src="/cyber-port.png"
-                  alt="Cyber Portfolio Mockup"
-                  className="w-full h-full object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
-                />
-                <div className="absolute top-2 left-2 px-2 py-0.5 bg-black/80 text-[8px] text-zinc-500 font-mono">
-                  DEV_UNIT_01
-                </div>
-              </div>
-            </motion.div>
+              anything
+            </motion.h1>
 
-            {/* CARD 2: Lithos (Middle layer - Z-Index 2) */}
+            {/* Overlapping Purple Helix / Wave SVG (Floating under/behind "anything") */}
             <motion.div
-              style={{ 
-                transform: "translateZ(20px) rotate(6deg) translateX(30px) translateY(10px)",
-                transformStyle: "preserve-3d"
-              }}
-              whileHover={{ transform: "translateZ(60px) rotate(3deg) translateX(40px) translateY(0px)" }}
-              className="absolute w-[82%] aspect-[1.3/1] bg-studio-white p-2 border border-studio-beige-accent shadow-2xl overflow-hidden"
-              onClick={onViewWorkClick}
+              initial={{ opacity: 0, x: 50, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              className="absolute right-[5%] sm:right-[15%] lg:right-[20%] bottom-[-10px] w-24 h-12 sm:w-44 sm:h-20 pointer-events-none z-0"
             >
-              <div className="w-full h-full bg-studio-beige overflow-hidden relative group">
-                <img
-                  src="/lithos-port.png"
-                  alt="Lithos Mockup"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out"
+              <svg viewBox="0 0 200 80" fill="none" className="w-full h-full">
+                <path 
+                  d="M10 40 Q 35 10, 60 40 T 110 40 T 160 40 T 210 40" 
+                  stroke="url(#helixGrad)" 
+                  strokeWidth="16" 
+                  strokeLinecap="round" 
+                  fill="none" 
+                  className="animate-pulse"
                 />
-                <div className="absolute bottom-2 left-2 px-2.5 py-0.5 bg-studio-white border border-studio-beige-accent text-[8px] text-studio-dark font-bold uppercase tracking-wider">
-                  LITHOS_CATALOGUE
-                </div>
-              </div>
+                <defs>
+                  <linearGradient id="helixGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#9d95ff" />
+                    <stop offset="100%" stopColor="#f100cb" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </motion.div>
-
-            {/* CARD 3: Prisma Portfolio (Foreground layer - Z-Index 3) */}
-            <motion.div
-              style={{ 
-                transform: "translateZ(80px) rotate(-2deg) translateY(60px) translateX(-20px)",
-                transformStyle: "preserve-3d"
-              }}
-              whileHover={{ transform: "translateZ(120px) rotate(-4deg) translateY(50px) translateX(-30px)" }}
-              className="absolute w-[88%] aspect-[1.5/1] bg-[#FAF8F5] p-3 border border-studio-beige-accent/80 shadow-2xl overflow-hidden"
-              onClick={onViewWorkClick}
-            >
-              <div className="w-full h-full bg-studio-white overflow-hidden relative group">
-                <img
-                  src="/prisma-port.png"
-                  alt="Prisma Portfolio Mockup"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out"
-                />
-                <div className="absolute top-3 right-3 px-2 py-0.5 bg-studio-gold text-studio-white text-[8px] tracking-[0.2em] font-bold uppercase">
-                  PRISMA_STUDIO
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Ambient Floating Particle (Extreme foreground) */}
-            <div 
-              style={{ transform: "translateZ(140px)" }} 
-              className="absolute -bottom-6 -right-6 w-3 h-3 bg-studio-gold rounded-full blur-[1px] pointer-events-none" 
-            />
-
           </div>
-        </motion.div>
+        </div>
+
+        {/* Action Controls / HUD Annotation Row */}
+        <div className="mt-16 sm:mt-24 md:mt-32 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-t border-surface-25 pt-8">
+          {/* Eyebrow Brackets Description */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="text-body-sm sm:text-body text-surface-cream font-normal max-w-md"
+          >
+            <span className="text-surface-50 font-mono mr-2">&#123;</span>
+            <span>GSAP — A wildly robust JavaScript animation library built for professionals</span>
+            <span className="text-surface-50 font-mono ml-2">&#125;</span>
+          </motion.div>
+
+          {/* Outlined Explore Link */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            <a 
+              href="https://gsap.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-4 bg-transparent border border-surface-cream text-surface-cream px-8 py-4.5 rounded-buttons text-[18px] font-semibold leading-[1.05] hover:bg-surface-cream hover:text-just-black transition-colors duration-500 shadow-md cursor-pointer"
+            >
+              <span>Get GSAP</span>
+              <ArrowRight size={18} />
+            </a>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
