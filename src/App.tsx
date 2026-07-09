@@ -1,15 +1,23 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Lenis from 'lenis';
-import { AnnouncementBanner } from './components/AnnouncementBanner';
 import { Navigation } from './components/Navigation';
-import { Hero } from './components/Hero';
-import { WhyGsap } from './components/WhyGsap';
-import { ToolsSection } from './components/ToolsSection';
-import { BrandsMarquee } from './components/BrandsMarquee';
-import { Showcase } from './components/Showcase';
+import { HeroScene } from './components/HeroScene';
+import { CrossScrollBelts } from './components/CrossScrollBelts';
+import { Services } from './components/Services';
+import { FeaturedWorks } from './components/FeaturedWorks';
+import { WhyChooseUs } from './components/WhyChooseUs';
+import { Process } from './components/Process';
+import { Pricing } from './components/Pricing';
+import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
+import { CustomCursor } from './components/CustomCursor';
+import { ProjectModal } from './components/ProjectModal';
+import { type Project } from './data/projects';
+import { AnimatedGradient } from '@/components/ui/animated-gradient-with-svg';
 
 function App() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
   // Initialize Lenis Smooth Scroll on Mount
   useEffect(() => {
     const lenis = new Lenis({
@@ -34,34 +42,85 @@ function App() {
     };
   }, []);
 
+  // Scrolling Helpers
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
-    <div className="bg-just-black min-h-screen text-surface-cream relative selection:bg-shockingly-green selection:text-just-black overflow-x-hidden">
-      {/* Top Banner Notice */}
-      <AnnouncementBanner />
+    <div className="bg-background min-h-screen text-foreground relative selection:bg-blue-500 selection:text-white overflow-x-hidden">
+      {/* Global Colorful Animated Theme Overlay */}
+      <div className="fixed inset-0 z-50 pointer-events-none opacity-40 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen">
+        <AnimatedGradient 
+          colors={["#3B82F6", "#EC4899", "#A78BFA", "#34D399", "#F59E0B"]} 
+          speed={0.02} 
+          blur="heavy" 
+        />
+      </div>
+
+      {/* Dynamic Cursor spotlight overlay */}
+      <CustomCursor />
 
       {/* Header Navigation HUD */}
-      <Navigation />
+      <Navigation
+        onAboutClick={() => scrollToSection('services')}
+        onWorkClick={() => scrollToSection('work')}
+        onSkillsClick={() => scrollToSection('why-choose-us')}
+        onProcessClick={() => scrollToSection('process')}
+        onPricingClick={() => scrollToSection('pricing')}
+        onContactClick={() => scrollToSection('contact')}
+      />
 
-      {/* Main Page Layout Flow */}
-      <main className="relative z-10 w-full flex flex-col pt-10">
-        {/* Landing Hero */}
-        <Hero />
+      <div className="relative z-10 w-full flex flex-col bg-transparent">
+        {/* Hero Cinematic Landing */}
+        <div className="bg-transparent relative overflow-hidden">
+          <HeroScene onExploreClick={() => scrollToSection('services')} />
+        </div>
 
-        {/* Why GSAP Narrative Statement & Capsules */}
-        <WhyGsap />
+        {/* Diagonal moving marquee bands intersecting transition */}
+        <CrossScrollBelts className="-mt-1 -mb-1" />
 
-        {/* GSAP Tools (Scroll, SVG, Text, UI) */}
-        <ToolsSection />
+        {/* About Section / Core Offerings */}
+        <Services />
 
-        {/* Brands Using GSAP Marquee */}
-        <BrandsMarquee />
+        {/* Featured Showcase / Helix Experience */}
+        <FeaturedWorks onSelectProject={setSelectedProject} />
 
-        {/* Showcase / Exhibition Slider */}
-        <Showcase />
-      </main>
+        {/* Skills Section / Capabilities & Assets */}
+        <WhyChooseUs />
+
+        {/* Process / Workflow Timeline */}
+        <Process />
+
+        {/* Interactive Pricing Scene */}
+        <div id="pricing" className="bg-transparent relative z-10">
+          <Pricing />
+        </div>
+
+        {/* Climax Contact page */}
+        <div id="contact" className="bg-transparent relative z-10">
+          <Contact />
+        </div>
+      </div>
 
       {/* Footer */}
       <Footer />
+
+      {/* Fullscreen Shared Takeover Image Modal */}
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+      />
     </div>
   );
 }
