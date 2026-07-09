@@ -55,25 +55,25 @@ export const Process: React.FC = () => {
     <section 
       ref={containerRef}
       id="process" 
-      className="py-24 md:py-36 bg-[#182238] relative overflow-hidden"
+      className="py-24 md:py-36 bg-studio-bg relative overflow-hidden"
     >
       {/* Full Section Background Cosmic Spectrum Animation */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-30">
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-30 dark:opacity-20 mix-blend-multiply dark:mix-blend-screen">
         <CosmicSpectrum color="original" blur={true} />
       </div>
 
       <div className="max-w-4xl mx-auto px-6 w-full relative z-10">
         
         {/* Editorial Section Header */}
-        <div className="text-center pb-16 border-b border-white/10 mb-24 relative flex flex-col items-center justify-center">
+        <div className="text-center pb-16 border-b border-studio-border/20 mb-24 relative flex flex-col items-center justify-center">
 
-          <span className="text-xs uppercase tracking-[0.25em] font-bold text-[#D4AF37]">
-            The Workflow
+          <span className="text-xs uppercase tracking-[0.25em] font-bold text-studio-muted font-mono mb-4">
+            &#123; The Workflow &#125;
           </span>
-          <h2 className="text-4xl md:text-7xl font-black tracking-tight text-white font-editorial uppercase mt-4 leading-none">
+          <h2 className="text-4xl md:text-7xl font-black tracking-tight text-studio-dark font-editorial uppercase mt-4 leading-none">
             Our Process
           </h2>
-          <p className="text-sm md:text-base text-white/70 font-sans mt-6 max-w-md mx-auto leading-relaxed font-medium text-pretty">
+          <p className="text-sm md:text-base text-studio-muted font-sans mt-6 max-w-md mx-auto leading-relaxed font-medium text-pretty">
             We follow an engineering-guided design model to translate visual concepts into performance code.
           </p>
         </div>
@@ -84,7 +84,7 @@ export const Process: React.FC = () => {
           {/* Scrolling SVG Line (Draws as user scrolls) */}
           <div className="absolute left-[30px] md:left-1/2 top-[30px] bottom-[30px] w-[2px] -translate-x-1/2 pointer-events-none">
             {/* Background trace line */}
-            <div className="absolute inset-0 bg-white/10" />
+            <div className="absolute inset-0 bg-studio-border/20" />
             
             {/* Active self-drawing SVG path */}
             <svg className="w-full h-full" preserveAspectRatio="none">
@@ -93,7 +93,7 @@ export const Process: React.FC = () => {
                 y1="0"
                 x2="0"
                 y2="100%"
-                stroke="#D4AF37"
+                stroke="var(--color-studio-gold)"
                 strokeWidth="2"
                 style={{ pathLength }}
               />
@@ -116,10 +116,10 @@ export const Process: React.FC = () => {
                   <div className="absolute left-[30px] md:left-1/2 -translate-x-1/2 top-0 z-20">
                     <motion.div
                       initial={{ scale: 0.7, opacity: 0.3 }}
-                      whileInView={{ scale: 1, opacity: 1, backgroundColor: '#182238', borderColor: '#D4AF37' }}
+                      whileInView={{ scale: 1, opacity: 1, backgroundColor: 'var(--color-studio-bg)', borderColor: 'var(--color-studio-gold)' }}
                       viewport={{ once: false, margin: '-150px' }}
                       transition={{ duration: 0.5, type: 'spring', stiffness: 200 }}
-                      className="w-[60px] h-[60px] rounded-full border-2 border-white/20 bg-[#182238] flex items-center justify-center font-mono font-bold text-sm text-white shadow-xl"
+                      className="w-[60px] h-[60px] rounded-full border-2 border-studio-border bg-studio-bg flex items-center justify-center font-mono font-bold text-sm text-studio-dark shadow-xl"
                     >
                       {step.num}
                     </motion.div>
@@ -140,14 +140,14 @@ export const Process: React.FC = () => {
                       }}
                       viewport={{ once: true, margin: '-100px' }}
                       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                      className={`p-8 bg-white/5 backdrop-blur-md border border-white/10 shadow-2xl relative group hover:border-[#D4AF37]/50 hover:bg-white/10 transition-all duration-300 rounded-2xl ${
+                      className={`p-8 bg-studio-beige border border-studio-border/20 shadow-2xl relative group hover:border-studio-gold/50 transition-all duration-300 rounded-2xl ${
                         isEven ? 'md:mr-12 md:text-right' : 'md:ml-12'
                       }`}
                     >
-                      <h3 className="text-2xl md:text-3xl font-black font-editorial text-white uppercase tracking-tight mb-4">
+                      <h3 className="text-2xl md:text-3xl font-black font-editorial text-studio-dark uppercase tracking-tight mb-4">
                         {step.title}
                       </h3>
-                      <p className="text-sm text-white/70 leading-relaxed font-sans font-medium text-pretty group-hover:text-white/90 transition-colors">
+                      <p className="text-sm text-studio-muted leading-relaxed font-sans font-medium text-pretty group-hover:text-studio-dark transition-colors">
                         {step.description}
                       </p>
                     </motion.div>

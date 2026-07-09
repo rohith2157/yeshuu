@@ -87,8 +87,8 @@ export const Contact: React.FC = () => {
         
         {/* 1. CLIMAX HEADLINE: Split-Word Mask Reveal */}
         <div className="w-full text-center md:text-left select-none">
-          <span className="text-sm font-mono uppercase tracking-widest text-studio-gold font-bold block mb-4">
-            The Climax Journey
+          <span className="text-xs font-mono uppercase tracking-widest text-studio-muted font-bold block mb-4">
+            &#123; The Climax Journey &#125;
           </span>
           <h2 className="text-[7.5vw] md:text-[6.5vw] font-black font-editorial tracking-tighter leading-[0.85] text-studio-dark uppercase flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2">
             {titleWords.map((word, idx) => (

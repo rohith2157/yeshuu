@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowUpRight, ChevronLeft, ChevronRight, Pause, Play, Sparkles } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { projects, type Project } from '../data/projects';
 import { cn } from "@/lib/utils";
 
@@ -64,10 +64,9 @@ export const DynamicHelixShowcase: React.FC<DynamicHelixShowcaseProps> = ({ onSe
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-sm uppercase tracking-widest font-bold text-studio-gold mb-4 flex items-center gap-2"
+            className="text-xs uppercase tracking-widest font-bold text-studio-muted mb-4 flex items-center gap-2 font-mono"
           >
-            <Sparkles size={14} className="text-studio-gold" />
-            Signature Exhibition
+            &#123; Signature Exhibition &#125;
           </motion.span>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <motion.h2 

@@ -86,9 +86,9 @@ export const Pricing: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-sm uppercase tracking-widest font-bold text-studio-gold block mb-4"
+            className="text-xs uppercase tracking-widest font-bold text-studio-muted block mb-4 font-mono"
           >
-            Investment Tier
+            &#123; Investment Tier &#125;
           </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
