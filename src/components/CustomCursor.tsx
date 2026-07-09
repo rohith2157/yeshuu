@@ -137,9 +137,9 @@ export const CustomCursor: React.FC = () => {
           width: 20,
           height: 20,
           text: '',
-          color: '#121212',
-          border: '1.5px solid rgba(18, 18, 18, 0.25)',
-          bg: 'rgba(18, 18, 18, 0.02)',
+          color: 'var(--studio-dark)',
+          border: '1.5px solid var(--studio-stone)',
+          bg: 'transparent',
         };
     }
   };
