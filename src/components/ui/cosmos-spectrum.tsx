@@ -211,13 +211,6 @@ export function CosmicSpectrum({ color = "original", blur = false }: CosmicSpect
     window.addEventListener("resize", () => ScrollTrigger.refresh())
   }
 
-  const splitText = (text: string, className = "") => {
-    return text.split("").map((char, index) => (
-      <span key={index} className={`char ${className}`}>
-        {char === " " ? "\u00A0" : char}
-      </span>
-    ))
-  }
 
   const currentColors = colorThemes[color] || colorThemes["original"]
 

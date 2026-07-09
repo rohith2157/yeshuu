@@ -1,4 +1,4 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, type RefObject } from 'react';
 
 interface Dimensions {
   width: number;
@@ -9,7 +9,7 @@ export function useDimensions(ref: RefObject<HTMLElement | SVGElement | null>): 
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
     const updateDimensions = () => {
       if (ref.current) {

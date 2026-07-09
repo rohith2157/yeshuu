@@ -1,5 +1,5 @@
 import React, { useRef, useState, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Canvas } from "@react-three/fiber";
 import GrainyGradient from '@/components/ui/gradient-shader-card';
 import { 

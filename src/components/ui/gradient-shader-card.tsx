@@ -56,8 +56,8 @@ const GrainyGradient = forwardRef<any, GrainyGradientProps>(({ ripples = [], onT
       
       // Update ripple uniforms
       const activeRipples = ripples.filter(ripple => currentTime - ripple.startTime < 2.0) // 2 second duration
-      const positions = []
-      const times = []
+      const positions: number[] = []
+      const times: number[] = []
       
       for (let i = 0; i < Math.min(activeRipples.length, 10); i++) { // Max 10 ripples
         const ripple = activeRipples[i]

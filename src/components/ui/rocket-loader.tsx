@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const Component = ({ className }: { className?: string }) => {
   return (
       <div className={`loader-container ${className || ''}`}>
