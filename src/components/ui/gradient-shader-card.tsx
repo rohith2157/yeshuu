@@ -36,8 +36,8 @@ const GrainyGradient = forwardRef<any, GrainyGradientProps>(({ ripples = [], onT
       waveNoiseSpeed2: { value: 0.2 },
       waveNoiseSpeed3: { value: 0.3 },
       // Ripple uniforms
-      ripplePositions: { value: [] },
-      rippleTimes: { value: [] },
+      ripplePositions: { value: [] as number[] },
+      rippleTimes: { value: [] as number[] },
       rippleCount: { value: 0 },
     }),
     [],

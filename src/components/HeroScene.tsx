@@ -92,7 +92,7 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onExploreClick }) => {
         className="relative z-10 flex items-start justify-between w-full text-xs sm:text-sm font-mono tracking-widest text-studio-muted uppercase"
       >
         <div className="flex flex-col gap-1">
-          <span>[ CREATIVE DEVELOPMENT ]</span>
+          <span>&#123; CREATIVE DEVELOPMENT &#125;</span>
           <span>EST. 2026 / MUMBAI, IN</span>
         </div>
         
@@ -147,7 +147,7 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ onExploreClick }) => {
               onClick={onExploreClick}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative inline-flex items-center gap-4 bg-studio-dark text-studio-white px-8 py-5 text-sm font-bold uppercase tracking-widest hover:bg-studio-gold hover:text-studio-white transition-colors duration-500 shadow-premium border border-studio-dark hover:border-studio-gold cursor-pointer rounded-sm"
+              className="group relative inline-flex items-center gap-4 border border-studio-dark text-studio-dark bg-transparent hover:bg-studio-dark hover:text-studio-bg px-8 py-5 text-sm font-bold uppercase tracking-widest transition-colors duration-500 shadow-premium cursor-pointer rounded-buttons"
             >
               <span>Enter Experience</span>
               <ArrowDownRight size={14} className="group-hover:rotate-[-45deg] transition-transform duration-500 text-studio-gold" />

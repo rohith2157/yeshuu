@@ -199,8 +199,8 @@ export const WhyChooseUs: React.FC = () => {
         {/* Section Header */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 border-b border-foreground/10 pb-12 mb-20">
           <div className="lg:col-span-8">
-            <span className="text-sm uppercase tracking-widest font-bold text-studio-gold block mb-4">
-              Studio Values
+            <span className="text-xs uppercase tracking-widest font-bold text-studio-muted block mb-4 font-mono">
+              &#123; Capabilities &amp; Assets &#125;
             </span>
             <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-foreground font-editorial uppercase mt-2 leading-none drop-shadow-sm">
               Capabilities <br />& Assets
